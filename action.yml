@@ -1,7 +1,7 @@
 name: Common CI Variables
 description: |-
-  Figures out common variables not currently available on Github Actions, such
-  as the REAL Git Commit SHA, the Git Commit Short SHA, etc
+  Figures out common values not available out-of-the-box on Github Actions
+  (Git Short SHA, etc)
 
 outputs:
   branch:
