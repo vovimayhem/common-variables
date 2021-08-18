@@ -6,7 +6,6 @@ function setOutput(outputName, outputValue) {
   return console.log(out)
 }
 
-
 function getRunnerUid() {
   return os.userInfo().uid
 }
@@ -37,7 +36,7 @@ function getGitCommitShortSHA() {
 }
 
 function getGitDasherizedBranch() {
-  let dasherized = getBranch().split('/').reverse().join('-').toLowerCase()
+  let dasherized = getGitBranch().split('/').reverse().join('-').toLowerCase()
   return dasherized.replace(/[^a-z0-9]/gmi, '-')
 }
 
