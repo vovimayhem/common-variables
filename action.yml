@@ -1,0 +1,22 @@
+name: Common CI Variables
+description: |-
+  Figures out common variables not currently available on Github Actions, such
+  as the REAL Git Commit SHA, the Git Commit Short SHA, etc
+
+outputs:
+  branch:
+    description: Name of the current branch
+  dasherized-branch:
+    description: The branch but dasherized
+  git-commit-sha:
+    description: First 7 characters of the Git commit SHA
+  git-commit-short:
+    description: First 7 characters of the Git commit SHA
+  runner-uid:
+    description: The ID of the OS user running the flow
+  runner-user:
+    description: The User name of the OS user running the flow
+
+runs:
+  using: node12
+  main: index.js
