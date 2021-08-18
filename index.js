@@ -15,7 +15,7 @@ function getRunnerUser() {
   return os.userInfo().username
 }
 
-function getBranch() {
+function getGitBranch() {
   let gitBranch = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF
   return gitBranch.replace(/^refs\/heads\//, '')
 }
@@ -36,13 +36,13 @@ function getGitCommitShortSHA() {
   return getGitCommitSHA().substring(0, 7)
 }
 
-function getDasherizedBranch() {
+function getGitDasherizedBranch() {
   let dasherized = getBranch().split('/').reverse().join('-').toLowerCase()
   return dasherized.replace(/[^a-z0-9]/gmi, '-')
 }
 
-setOutput('branch', getBranch())
-setOutput('dasherized-branch', getDasherizedBranch())
+setOutput('git-branch', getGitBranch())
+setOutput('git-dasherized-branch', getGitDasherizedBranch())
 
 setOutput('git-commit-sha', getGitCommitSHA())
 setOutput('git-commit-short-sha', getGitCommitShortSHA())

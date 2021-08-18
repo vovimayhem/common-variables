@@ -4,9 +4,9 @@ description: |-
   (Git Short SHA, etc)
 
 outputs:
-  branch:
+  git-branch:
     description: Name of the current branch
-  dasherized-branch:
+  git-dasherized-branch:
     description: The branch but dasherized
   git-commit-sha:
     description: The Git commit SHA
