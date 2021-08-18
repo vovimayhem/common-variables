@@ -9,8 +9,8 @@ outputs:
   dasherized-branch:
     description: The branch but dasherized
   git-commit-sha:
-    description: First 7 characters of the Git commit SHA
-  git-commit-short:
+    description: The Git commit SHA
+  git-commit-short-sha:
     description: First 7 characters of the Git commit SHA
   runner-uid:
     description: The ID of the OS user running the flow
