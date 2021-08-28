@@ -1,0 +1,12 @@
+**/.env
+!**/*example.env
+
+.git/
+.gitconfig
+.gitattributes
+
+Dockerfile
+**/docker-compose*.yml
+.devcontainer
+
+/node_modules

@@ -1,0 +1,4 @@
+# For now it's just a "volumes" declaration.
+
+volumes:
+  node_modules:
