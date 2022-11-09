@@ -1,0 +1,89 @@
+name: Continuous Integration
+
+on:
+  # Trigger the workflow on activity over any pull request to main:
+  pull_request:
+    branches:
+      - main
+
+# On this project, I went with a single "Test & Build" job, since each job
+# gets billed rounded to the next minute, and having multiple separated jobs
+# is not worth it at the beginning of the project.
+
+# Keep in mind that, if the test suite becomes too big, and test threading is
+# required, or the workflow speed becomes critial, we might need to revert back
+# to separated jobs.
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+
+    outputs:
+      git-commit-short-sha: ${{ steps.variables.outputs.git-commit-short-sha }}
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3.1.0
+
+      - # We'll generate a unique id that we'll use to identify the build run
+        # on our systems
+        name: Generate UUID for build
+        id: uuidgen
+        run: echo "uuid=$(uuidgen)" >> $GITHUB_OUTPUT
+
+      - name: Set additional variables
+        id: variables
+        uses: ./ # icalia-actions/common-variables
+
+      - name: Set build timestamp
+        id: set-build-timestamp
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2.2.1
+
+      - name: Build Test Image
+        id: build-test-image
+        uses: docker/build-push-action@v3.2.0
+        with:
+          load: true
+          target: testing
+          platforms: linux/amd64
+          builder: ${{ steps.buildx.outputs.name }}
+          build-args: |
+            DEVELOPER_UID=${{ steps.variables.outputs.runner-uid }}
+            DEVELOPER_USERNAME=${{ steps.variables.outputs.runner-user }}
+          tags: |
+            icalia-actions/common-variables:testing-${{ steps.variables.outputs.git-dasherized-branch }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Compare the expected and actual dist/ directories
+        env:
+          UID: ${{ steps.variables.outputs.runner-uid }}
+          USER: ${{ steps.variables.outputs.runner-user }}
+          TESTING_IMAGE_TAG: ":testing-${{ steps.variables.outputs.git-dasherized-branch }}"
+        run: |
+          docker compose run --rm tests yarn prepare
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
+        id: diff
+
+      # If index.js was different than expected, upload the expected version as an artifact
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
+        with:
+          name: dist
+          path: dist/
+
+      - name: Run tests
+        env:
+          UID: ${{ steps.variables.outputs.runner-uid }}
+          USER: ${{ steps.variables.outputs.runner-user }}
+          TESTING_IMAGE_TAG: ":testing-${{ steps.variables.outputs.git-dasherized-branch }}"
+        run: docker compose run --rm tests

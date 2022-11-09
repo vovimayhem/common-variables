@@ -1,10 +1,6 @@
-const os = require("os")
-const fs = require("fs")
-
-function setOutput(outputName, outputValue) {
-  let out = `::set-output name=${outputName}::${outputValue}`
-  return console.log(out)
-}
+import os from "os"
+import fs from "fs"
+import { setOutput } from "@actions/core"
 
 function getRunnerUid() {
   return os.userInfo().uid
@@ -40,11 +36,16 @@ function getGitDasherizedBranch() {
   return dasherized.replace(/[^a-z0-9]/gmi, '-')
 }
 
-setOutput('git-branch', getGitBranch())
-setOutput('git-dasherized-branch', getGitDasherizedBranch())
+// most @actions toolkit packages have async methods
+async function run() {
+  setOutput('git-branch', getGitBranch())
+  setOutput('git-dasherized-branch', getGitDasherizedBranch())
 
-setOutput('git-commit-sha', getGitCommitSHA())
-setOutput('git-commit-short-sha', getGitCommitShortSHA())
+  setOutput('git-commit-sha', getGitCommitSHA())
+  setOutput('git-commit-short-sha', getGitCommitShortSHA())
 
-setOutput('runner-uid', getRunnerUid())
-setOutput('runner-user', getRunnerUser())
+  setOutput('runner-uid', getRunnerUid())
+  setOutput('runner-user', getRunnerUser())
+}
+
+run();

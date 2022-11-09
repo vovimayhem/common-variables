@@ -4,23 +4,22 @@ volumes:
   vscode_insiders_extensions:
 
 services:
-  lib:
-    image: icalia-actions/common-variables:development
-    build:
+  tests: &base
+    build: &base-build
       context: .
-      target: development
+      target: testing
       dockerfile: Dockerfile
       args:
         DEVELOPER_UID: ${UID:-1000}
         DEVELOPER_USER: ${USER:-you}
+    image: icalia-actions/common-variables${TESTING_IMAGE_TAG:-:testing}
+    
     working_dir: /workspaces/common-variables
-    entrypoint: /workspaces/common-variables/bin/dev-entrypoint
+    
     volumes:
       - .:/workspaces/common-variables
-      # - node_modules:/workspaces/common-variables/node_modules
-      - vscode_extensions:/home/${USER:-you}/.vscode-server/extensions
-      - vscode_insiders_extensions:/home/${USER:-you}/.vscode-server-insiders/extensions
-    
+      - node_modules:/workspaces/common-variables/node_modules
+
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
     stdin_open: true
@@ -36,9 +35,22 @@ services:
     security_opt:
       - seccomp:unconfined
 
+    command: yarn test
+    
+  lib:
+    <<: *base
+    image: icalia-actions/common-variables:development
+    build:
+      <<: *base-build
+      target: development
+    entrypoint: /workspaces/common-variables/bin/dev-entrypoint
+    volumes:
+      - .:/workspaces/common-variables
+      - node_modules:/workspaces/common-variables/node_modules
+      - vscode_extensions:/home/${USER:-you}/.vscode-server/extensions
+      - vscode_insiders_extensions:/home/${USER:-you}/.vscode-server-insiders/extensions
+
     command: vscode-wait # Éste comando está definido en `bin/dev-entrypoint`
 
     environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       GIT_EDITOR: code
