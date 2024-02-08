@@ -12,7 +12,9 @@ services:
       args:
         DEVELOPER_UID: ${UID:-1000}
         DEVELOPER_USER: ${USER:-you}
-    image: icalia-actions/common-variables${TESTING_IMAGE_TAG:-:testing}
+        NODE_CODENAME: ${NODE_CODENAME:-gallium}
+        DEBIAN_CODENAME: ${DEBIAN_CODENAME:-buster}
+    image: vovimayhem/common-variables${TESTING_IMAGE_TAG:-:testing}
     
     working_dir: /workspaces/common-variables
     

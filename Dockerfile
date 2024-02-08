@@ -1,5 +1,9 @@
+# Receive the Node & Debian codenames:
+ARG NODE_CODENAME=gallium
+ARG DEBIAN_CODENAME=buster
+
 # Stage I: Runtime  ============================================================
-FROM node:gallium-buster-slim AS runtime
+FROM node:${NODE_CODENAME}-${DEBIAN_CODENAME}-slim AS runtime
 
 RUN echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
  && apt-get update \
@@ -15,12 +19,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends git
 
 # Receive the developer user's UID and USER:
 ARG DEVELOPER_UID=1000
-ARG DEVELOPER_USERNAME=you
+ARG DEVELOPER_USER=you
 
 # Replicate the developer user in the development image:
 RUN id ${DEVELOPER_UID} \
  || useradd -r -m -u ${DEVELOPER_UID} \
-    --shell /bin/bash -c "Developer User,,," ${DEVELOPER_USERNAME}
+    --shell /bin/bash -c "Developer User,,," ${DEVELOPER_USER}
 
 # Ensure the developer user's home directory and /workspaces/common-variables 
 # are currectly owned - A workaround to a side effect of setting WORKDIR before
@@ -44,9 +48,6 @@ ENV PATH=/workspaces/common-variables/node_modules/.bin:$PATH
 
 # Stage III: Development =======================================================
 FROM testing AS development
-
-# Receive the developer user's UID and USER:
-ARG DEVELOPER_UID=1000
 
 # Switch to "root" user to install system dependencies such as sudo:
 USER root
@@ -87,14 +88,12 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/command-hist
 # Switch to the developer user:
 USER ${DEVELOPER_UID}
 
-# Create the directories used to save Visual Studio Code extensions inside the
-# dev container:
-RUN mkdir -p ~/.vscode-server/extensions ~/.vscode-server-insiders/extensions
+# # Create the directories used to save Visual Studio Code extensions inside the
+# # dev container:
+# RUN mkdir -p ~/.vscode-server/extensions ~/.vscode-server-insiders/extensions
 
 # Stage IV: Builder ============================================================
 FROM testing AS builder
-
-ARG DEVELOPER_UID=1000
 
 COPY --chown=${DEVELOPER_UID} . /workspaces/common-variables/
 RUN yarn build
