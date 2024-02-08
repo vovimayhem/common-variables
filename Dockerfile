@@ -1,6 +1,6 @@
 # Receive the Node & Debian codenames:
-ARG NODE_CODENAME=gallium
-ARG DEBIAN_CODENAME=buster
+ARG NODE_CODENAME=iron
+ARG DEBIAN_CODENAME=bookworm
 
 # Stage I: Runtime  ============================================================
 FROM node:${NODE_CODENAME}-${DEBIAN_CODENAME}-slim AS runtime

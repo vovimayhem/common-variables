@@ -12,8 +12,8 @@ services:
       args:
         DEVELOPER_UID: ${UID:-1000}
         DEVELOPER_USER: ${USER:-you}
-        NODE_CODENAME: ${NODE_CODENAME:-gallium}
-        DEBIAN_CODENAME: ${DEBIAN_CODENAME:-buster}
+        NODE_CODENAME: ${NODE_CODENAME:-iron}
+        DEBIAN_CODENAME: ${DEBIAN_CODENAME:-bookworm}
     image: vovimayhem/common-variables${TESTING_IMAGE_TAG:-:testing}
     
     working_dir: /workspaces/common-variables

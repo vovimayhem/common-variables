@@ -18,5 +18,5 @@ outputs:
     description: The User name of the OS user running the flow
 
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
