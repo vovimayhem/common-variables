@@ -2889,6 +2889,10 @@ var core = __nccwpck_require__(186);
 
 
 
+function getTimestamp() {
+  return new Date().valueOf()
+}
+
 function getRunnerUid() {
   return external_os_default().userInfo().uid
 }
@@ -2925,6 +2929,8 @@ function getGitDasherizedBranch() {
 // most @actions toolkit packages have async methods
 async function run() {
   (0,core.setOutput)('uuid', v4())
+
+  ;(0,core.setOutput)('timestamp', getTimestamp())
 
   ;(0,core.setOutput)('git-branch', getGitBranch())
   ;(0,core.setOutput)('git-dasherized-branch', getGitDasherizedBranch())

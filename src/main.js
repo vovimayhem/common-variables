@@ -1,7 +1,11 @@
 import os from 'os'
 import fs from 'fs'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as getUUID } from 'uuid'
 import { setOutput } from '@actions/core'
+
+function getTimestamp() {
+  return new Date().valueOf()
+}
 
 function getRunnerUid() {
   return os.userInfo().uid
@@ -38,7 +42,9 @@ function getGitDasherizedBranch() {
 
 // most @actions toolkit packages have async methods
 export default async function run() {
-  setOutput('uuid', uuidv4())
+  setOutput('uuid', getUUID())
+
+  setOutput('timestamp', getTimestamp())
 
   setOutput('git-branch', getGitBranch())
   setOutput('git-dasherized-branch', getGitDasherizedBranch())
