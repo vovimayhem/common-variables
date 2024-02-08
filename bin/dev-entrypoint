@@ -36,7 +36,7 @@ then
 
     lock_setup
 
-    # ensure_node_modules_are_installed
+    ensure_node_modules_are_installed
     
     unlock_setup
 fi
