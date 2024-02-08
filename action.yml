@@ -1,4 +1,4 @@
-name: Common CI Variables
+name: Common Build Variables
 description: |-
   Figures out common values not available out-of-the-box on Github Actions
   (Git Short SHA, etc)
