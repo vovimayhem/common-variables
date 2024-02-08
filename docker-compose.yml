@@ -39,7 +39,7 @@ services:
     
   lib:
     <<: *base
-    image: icalia-actions/common-variables:development
+    image: vovimayhem/common-variables:development
     build:
       <<: *base-build
       target: development
