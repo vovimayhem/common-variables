@@ -3,6 +3,10 @@ description: |-
   Figures out common values not available out-of-the-box on Github Actions
   (Git Short SHA, etc)
 
+branding:
+  icon: 'align-justify'
+  color: 'black'
+
 outputs:
   git-branch:
     description: Name of the current branch
