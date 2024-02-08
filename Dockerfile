@@ -88,9 +88,9 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/command-hist
 # Switch to the developer user:
 USER ${DEVELOPER_UID}
 
-# # Create the directories used to save Visual Studio Code extensions inside the
-# # dev container:
-# RUN mkdir -p ~/.vscode-server/extensions ~/.vscode-server-insiders/extensions
+# Create the directories used to save Visual Studio Code extensions inside the
+# dev container:
+RUN mkdir -p ~/.vscode-server/extensions ~/.vscode-server-insiders/extensions
 
 # Stage IV: Builder ============================================================
 FROM testing AS builder
