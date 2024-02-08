@@ -2858,36 +2858,40 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
+// ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(37);
-/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(os__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(147);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(186);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_2__);
+
+// EXTERNAL MODULE: external "os"
+var external_os_ = __nccwpck_require__(37);
+var external_os_default = /*#__PURE__*/__nccwpck_require__.n(external_os_);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(147);
+var external_fs_default = /*#__PURE__*/__nccwpck_require__.n(external_fs_);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(186);
+;// CONCATENATED MODULE: ./src/main.js
 
 
 
 
 function getRunnerUid() {
-  return os__WEBPACK_IMPORTED_MODULE_0___default().userInfo().uid
+  return external_os_default().userInfo().uid
 }
 
 function getRunnerUser() {
-  return os__WEBPACK_IMPORTED_MODULE_0___default().userInfo().username
+  return external_os_default().userInfo().username
 }
 
 function getGitBranch() {
-  let gitBranch = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF
+  const gitBranch = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF
   return gitBranch.replace(/^refs\/heads\//, '')
 }
 
 function getGitCommitSHA() {
   let gitCommitSha = process.env.GITHUB_SHA
   const eventName = process.env.GITHUB_EVENT_NAME
-  
-  if (eventName == 'pull_request') {
-    const eventData = JSON.parse(fs__WEBPACK_IMPORTED_MODULE_1___default().readFileSync(process.env.GITHUB_EVENT_PATH))
+  if (eventName === 'pull_request') {
+    const eventData = JSON.parse(external_fs_default().readFileSync(process.env.GITHUB_EVENT_PATH))
     gitCommitSha = eventData.pull_request.head.sha
   }
 
@@ -2899,23 +2903,27 @@ function getGitCommitShortSHA() {
 }
 
 function getGitDasherizedBranch() {
-  let dasherized = getGitBranch().split('/').reverse().join('-').toLowerCase()
-  return dasherized.replace(/[^a-z0-9]/gmi, '-')
+  const dasherized = getGitBranch().split('/').reverse().join('-').toLowerCase()
+  return dasherized.replace(/[^a-z0-9]/gim, '-')
 }
 
 // most @actions toolkit packages have async methods
 async function run() {
-  (0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('git-branch', getGitBranch())
-  ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('git-dasherized-branch', getGitDasherizedBranch())
+  (0,core.setOutput)('git-branch', getGitBranch())
+  ;(0,core.setOutput)('git-dasherized-branch', getGitDasherizedBranch())
 
-  ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('git-commit-sha', getGitCommitSHA())
-  ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('git-commit-short-sha', getGitCommitShortSHA())
+  ;(0,core.setOutput)('git-commit-sha', getGitCommitSHA())
+  ;(0,core.setOutput)('git-commit-short-sha', getGitCommitShortSHA())
 
-  ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('runner-uid', getRunnerUid())
-  ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_2__.setOutput)('runner-user', getRunnerUser())
+  ;(0,core.setOutput)('runner-uid', getRunnerUid())
+  ;(0,core.setOutput)('runner-user', getRunnerUser())
 }
 
-run();
+;// CONCATENATED MODULE: ./src/index.js
+
+
+run()
+
 })();
 
 module.exports = __webpack_exports__;
