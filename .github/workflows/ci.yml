@@ -34,7 +34,7 @@ jobs:
 
       - name: Set additional variables
         id: variables
-        uses: ./ # icalia-actions/common-variables
+        uses: ./ # vovimayhem/common-variables
 
       - name: Set build timestamp
         id: set-build-timestamp
@@ -56,7 +56,7 @@ jobs:
             DEVELOPER_UID=${{ steps.variables.outputs.runner-uid }}
             DEVELOPER_USERNAME=${{ steps.variables.outputs.runner-user }}
           tags: |
-            icalia-actions/common-variables:testing-${{ steps.variables.outputs.git-dasherized-branch }}
+            vovimayhem/common-variables:testing-${{ steps.variables.outputs.git-dasherized-branch }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
