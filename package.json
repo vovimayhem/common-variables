@@ -1,6 +1,6 @@
 {
   "name": "common-build-variables",
-  "version": "0.0.5",
+  "version": "0.0.1",
   "description": "Figures out common variables not currently available on Github Actions, such as Git Commit Short SHA, etc",
   "main": "index.js",
   "scripts": {
