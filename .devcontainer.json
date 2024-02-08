@@ -30,8 +30,15 @@
 
   "workspaceFolder": "/workspaces/common-variables",
 
-  // An array of extension IDs that specify the extensions to install inside the
-  // container when you first attach to it.
-  "extensions": [
-  ]
+  "customizations": {
+    "vscode": {
+      // An array of extension IDs that specify the extensions to install inside
+      // the container when running on VS Code
+      "extensions": [
+        // Makes it easy to create, manage, and debug containerized
+        // applications.
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
 }
