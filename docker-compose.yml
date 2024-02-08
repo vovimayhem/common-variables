@@ -14,13 +14,13 @@ services:
         DEVELOPER_USER: ${USER:-you}
         NODE_CODENAME: ${NODE_CODENAME:-iron}
         DEBIAN_CODENAME: ${DEBIAN_CODENAME:-bookworm}
-    image: vovimayhem/common-variables${TESTING_IMAGE_TAG:-:testing}
+    image: vovimayhem/common-build-variables${TESTING_IMAGE_TAG:-:testing}
     
-    working_dir: /workspaces/common-variables
+    working_dir: /workspaces/common-build-variables
     
     volumes:
-      - .:/workspaces/common-variables
-      - node_modules:/workspaces/common-variables/node_modules
+      - .:/workspaces/common-build-variables
+      - node_modules:/workspaces/common-build-variables/node_modules
 
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
@@ -41,14 +41,14 @@ services:
     
   lib:
     <<: *base
-    image: vovimayhem/common-variables:development
+    image: vovimayhem/common-build-variables:development
     build:
       <<: *base-build
       target: development
-    entrypoint: /workspaces/common-variables/bin/dev-entrypoint
+    entrypoint: /workspaces/common-build-variables/bin/dev-entrypoint
     volumes:
-      - .:/workspaces/common-variables
-      - node_modules:/workspaces/common-variables/node_modules
+      - .:/workspaces/common-build-variables
+      - node_modules:/workspaces/common-build-variables/node_modules
       - vscode_extensions:/home/${USER:-you}/.vscode-server/extensions
       - vscode_insiders_extensions:/home/${USER:-you}/.vscode-server-insiders/extensions
 

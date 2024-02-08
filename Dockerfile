@@ -26,25 +26,25 @@ RUN id ${DEVELOPER_UID} \
  || useradd -r -m -u ${DEVELOPER_UID} \
     --shell /bin/bash -c "Developer User,,," ${DEVELOPER_USER}
 
-# Ensure the developer user's home directory and /workspaces/common-variables 
+# Ensure the developer user's home directory and /workspaces/common-build-variables 
 # are currectly owned - A workaround to a side effect of setting WORKDIR before
 # creating the user
-RUN mkdir -p /workspaces/common-variables \
- && chown -R ${DEVELOPER_UID}:node /workspaces/common-variables
+RUN mkdir -p /workspaces/common-build-variables \
+ && chown -R ${DEVELOPER_UID}:node /workspaces/common-build-variables
 
 # Add the project's executable path to the system PATH:
-ENV PATH=/workspaces/common-variables/bin:$PATH
+ENV PATH=/workspaces/common-build-variables/bin:$PATH
 
 # Configure the app dir as the working dir:
-WORKDIR /workspaces/common-variables
+WORKDIR /workspaces/common-build-variables
 
 # Switch to the developer user:
 USER ${DEVELOPER_UID}
 
 # Copy and install the project dependency lists into the container image:
-COPY --chown=${DEVELOPER_UID} package.json yarn.lock /workspaces/common-variables/
+COPY --chown=${DEVELOPER_UID} package.json yarn.lock /workspaces/common-build-variables/
 RUN yarn install --ignore-scripts
-ENV PATH=/workspaces/common-variables/node_modules/.bin:$PATH
+ENV PATH=/workspaces/common-build-variables/node_modules/.bin:$PATH
 
 # Stage III: Development =======================================================
 FROM testing AS development
@@ -95,12 +95,12 @@ RUN mkdir -p ~/.vscode-server/extensions ~/.vscode-server-insiders/extensions
 # Stage IV: Builder ============================================================
 FROM testing AS builder
 
-COPY --chown=${DEVELOPER_UID} . /workspaces/common-variables/
+COPY --chown=${DEVELOPER_UID} . /workspaces/common-build-variables/
 RUN yarn build
 
 RUN rm -rf .env .npmignore __test__ action.yml bin ci-compose.yml coverage src tsconfig.json yarn.lock tmp
 
 # Stage V: Release =============================================================
 FROM runtime AS release
-COPY --from=builder --chown=node:node /workspaces/common-variables /workspaces/common-variables
-WORKDIR /workspaces/common-variables
+COPY --from=builder --chown=node:node /workspaces/common-build-variables /workspaces/common-build-variables
+WORKDIR /workspaces/common-build-variables
