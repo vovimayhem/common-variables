@@ -8,6 +8,8 @@ branding:
   color: 'black'
 
 outputs:
+  uuid:
+    description: A UUID useful to uniquely identify the build
   git-branch:
     description: Name of the current branch
   git-dasherized-branch:

@@ -2867,9 +2867,24 @@ var external_os_default = /*#__PURE__*/__nccwpck_require__.n(external_os_);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(147);
 var external_fs_default = /*#__PURE__*/__nccwpck_require__.n(external_fs_);
+// EXTERNAL MODULE: ./node_modules/uuid/dist/index.js
+var dist = __nccwpck_require__(840);
+;// CONCATENATED MODULE: ./node_modules/uuid/wrapper.mjs
+
+const v1 = dist.v1;
+const v3 = dist.v3;
+const v4 = dist.v4;
+const v5 = dist.v5;
+const NIL = dist.NIL;
+const version = dist.version;
+const validate = dist.validate;
+const stringify = dist.stringify;
+const parse = dist.parse;
+
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(186);
 ;// CONCATENATED MODULE: ./src/main.js
+
 
 
 
@@ -2909,7 +2924,9 @@ function getGitDasherizedBranch() {
 
 // most @actions toolkit packages have async methods
 async function run() {
-  (0,core.setOutput)('git-branch', getGitBranch())
+  (0,core.setOutput)('uuid', v4())
+
+  ;(0,core.setOutput)('git-branch', getGitBranch())
   ;(0,core.setOutput)('git-dasherized-branch', getGitDasherizedBranch())
 
   ;(0,core.setOutput)('git-commit-sha', getGitCommitSHA())
